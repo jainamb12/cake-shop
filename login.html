@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sweet Treats Bakery</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f9f0e3;
+      --caramel: #C68B59;
+
+    }
+
+    body {
+      background: var(--cream);
+      min-height: 100vh;
+    }
+
+    .cake-form-container {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 400px;
+      padding: 30px;
+    }
+
+    .form-header {
+      color: #6d4c41;
+      font-family: 'Cookie', cursive;
+      font-size: 2rem;
+    }
+
+    .btn-primary {
+      background-color: rgb(236, 164, 113);
+      border: none;
+      padding: 10px 20px;
+      transition: all 0.3s;
+    }
+
+    .btn-primary:hover {
+      background-color: #eabd9e;
+    }
+
+    .password-container {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 0.75rem;
+      top: 72%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #9ca3af;
+      padding: 0.25rem;
+    }
+
+    .toggle-form {
+      cursor: pointer;
+      color: rgb(157, 129, 88);
+    }
+  </style>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="cake-form-container">
+      <!-- Login Form -->
+      <form id="loginForm" class="form" onsubmit="return handleLogin()">
+        <h2 class="form-header text-center mb-4">Welcome Back! 🎂</h2>
+        <div class="mb-2">
+          <label for="loginEmail" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="loginEmail" required>
+        </div>
+        <div class="mb-2 password-container">
+          <label for="loginPassword" class="form-label">Password</label>
+          <input type="password" id="loginPassword" class="form-control" required>
+          <button type="button" class="toggle-password" onclick="togglePassword('loginPassword', 'passwordIconLogin')">
+            <i data-lucide="eye" id="passwordIconLogin"></i>
+          </button>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+        <p class="text-center mt-3">Don't have an account? <span class="toggle-form" onclick="showSignup()">Create
+            Account</span></p>
+      </form>
+
+      <!-- Signup Form -->
+      <form id="signupForm" class="form d-none" onsubmit="return handleSignup()">
+        <h2 class="form-header text-center mb-4">Join Our Sweet Family! 🧁</h2>
+        <div class="mb-2">
+          <label for="signupName" class="form-label">Full Name</label>
+          <input type="text" class="form-control" id="signupName" required>
+        </div>
+        <div class="mb-2">
+          <label for="signupEmail" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="signupEmail" required>
+        </div>
+        <div class="mb-2 password-container">
+          <label for="signupPassword" class="form-label">Password</label>
+          <input type="password" class="form-control" id="signupPassword" required>
+          <button type="button" class="toggle-password"
+            onclick="togglePassword('signupPassword', 'passwordIconSignup')">
+            <i data-lucide="eye" id="passwordIconSignup"></i>
+          </button>
+        </div>
+        <div class="mb-2 password-container">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input type="password" class="form-control" id="confirmPassword" required>
+          <button type="button" class="toggle-password"
+            onclick="togglePassword('confirmPassword', 'passwordIconConfirm')">
+            <i data-lucide="eye" id="passwordIconConfirm"></i>
+          </button>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+        <p class="text-center mt-3">Already have an account? <span class="toggle-form" onclick="showLogin()">Login
+            here</span></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    function showSignup() {
+      document.getElementById('loginForm').classList.add('d-none');
+      document.getElementById('signupForm').classList.remove('d-none');
+    }
+
+    function showLogin() {
+      document.getElementById('signupForm').classList.add('d-none');
+      document.getElementById('loginForm').classList.remove('d-none');
+    }
+
+    function togglePassword(inputId, iconId) {
+      let passwordField = document.getElementById(inputId);
+      let icon = document.getElementById(iconId);
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        icon.setAttribute('data-lucide', 'eye-off');
+      } else {
+        passwordField.type = 'password';
+        icon.setAttribute('data-lucide', 'eye');
+      }
+      lucide.createIcons();
+    }
+
+    function handleLogin() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const user = JSON.parse(localStorage.getItem(email));
+
+      if (user && user.password === password) {
+        alert('Login successful!');
+        localStorage.setItem("loggedInUser", email);
+
+        // Load the saved cart (if any) into the current cart
+        const storedCart = localStorage.getItem(`cart_${email}`);
+        if (storedCart && storedCart !== "[]") {
+          localStorage.setItem("cart", storedCart);
+        } else {
+          localStorage.setItem("cart", "[]");
+        }
+
+        // Similarly, load orders if needed
+        const storedOrders = localStorage.getItem(`orders_${email}`);
+        if (storedOrders && storedOrders !== "[]") {
+          localStorage.setItem("orders", storedOrders);
+        } else {
+          localStorage.setItem("orders", "[]");
+        }
+
+        window.location.href = "index.html"; // Redirect to homepage
+      } else {
+        alert('Invalid email or password. Please try again.');
+      }
+      return false; // Prevent form submission
+    }
+
+
+    function handleSignup() {
+      const name = document.getElementById('signupName').value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (password !== confirmPassword) {
+        alert('Passwords do not match!');
+        return false; // Stop submission if passwords don't match
+      }
+
+      const user = { name, email, password };
+      localStorage.setItem(email, JSON.stringify(user));
+      alert('Account created successfully! 🎉');
+      showLogin();
+      return false; // Prevent form submission and page reload
+    }
+  </script>
+</body>
+
+</html>
