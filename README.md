@@ -1,6 +1,8 @@
 # CAKE SHOP
-Hey there! Welcome to the Cake Shop. This is my first project of web development. I built this as my group project during **third semester**.
-cake shop is simple web app developed using **HTML, CSS, Bootstrap and JavaScript**. we also uses **Google fonts** for better styling. It has varity of features which are give below.
+Welcome to the Cake Shop, my first web development project! This simple web application was built as a group project during my **third semester**, demonstrating fundamental front-end development skills.
+The Cake Shop is developed using **HTML, CSS, Bootstrap, and JavaScript,** with **Google Fonts** integrated for enhanced styling.
+
+![Project flow chart](images/hms-system-design.png)
 
 ## Features
 1) **Navigation Bar**: It is the top most part of the web app. It has links to different pages of the web app.
